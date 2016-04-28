@@ -1,0 +1,57 @@
+.slcache/
+.idea
+keypathwayminer.groovy
+*.iws
+*Db.properties
+*Db.script
+.settings
+stacktrace.log
+/*.zip
+/plugin.xml
+/*.log
+/*DB.*
+/cobertura.ser
+.DS_Store
+/out/
+/web-app/plugins
+/web-app/WEB-INF/classes
+/.link_to_grails_plugins/
+/target-eclipse/
+/.idea/
+*.iml
+/maven-archiver/
+/.metadata/
+/kpm-standalone/results/
+*/target/
+/kpm-web/out/
+/kpm-web-R/output/
+/kpm-web/prodDb.*
+/grails-2.2.4/*
+/kpm-core/target/*
+
+# Eclipse
+.classpath
+.project
+
+
+
+# Maven
+log/
+kpm-web/logs/*
+kpm-library/KPMLibrary/logs/*
+
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+#LaTeX junk
+*.out
+*.log
+*.blg
+*.bbl
+*.toc
+*.aux
+*.synctex.gz
+*.dvi
+*.lof
+*.lot

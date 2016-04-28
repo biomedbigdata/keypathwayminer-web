@@ -1,0 +1,427 @@
+swagger: '2.0'
+info:
+  title: KeyPathwayMinerWeb API
+  description: Integrate de novo network enrichment into your application using KeyPathwayMinerWeb
+  version: '1.0'
+host: tomcat.compbio.sdu.dk
+schemes:
+  - http
+basePath: /keypathwayminer
+produces:
+  - application/json
+paths:
+  /rest/availableNetworks:
+    get:
+      summary: List of available networks
+      description: > 
+        Returns a list of networks currently available in KeyPathwayMinerWeb.
+      tags: 
+        - Networks
+      responses:
+        '200':
+          description: An array of graphs.
+          schema: 
+            type: array
+            items: 
+              $ref: '#/definitions/Network'
+        default:
+          description: No networks found
+          schema:
+            $ref: '#/definitions/Error'
+  /rest/runParameters:
+    get:
+      summary: Parameters of a specific KeyPathwayMinerWeb run
+      description: >
+        The parameters that were part of the KeyPathwayMinerWeb network enrichment request
+      parameters:
+        - name: id
+          required: true
+          in: query
+          description: ID of KeyPathwayMinerWeb run
+          type: integer
+      tags:
+        - Parameters
+      responses:
+        '200':
+          description: An object containing nested run parameters
+          schema:
+            $ref: '#/definitions/KpmRun'
+        default:
+          description: No run parameters found
+          schema:
+            $ref: '#/definitions/Error'
+  /rest/questsInQueue:
+    get:
+      summary: Number of jobs currently in queue
+      tags:
+        - Jobs
+      responses:
+        '200':
+          description: Number of jobs in queue
+          schema:
+            type: integer
+  /rest/network:
+    get:
+      summary: Get network id using the network name
+      parameters:
+        - name: name
+          required: true
+          in: query
+          description: Name of the network
+          type: string
+      tags: 
+        - Networks
+      responses:
+        '200':
+          description: An object containing the network id and name
+          schema:
+            $ref: '#/definitions/Network'
+        default:
+          description: Network not found
+          schema:
+            $ref: '#/definitions/Error'
+  /request/submit:
+    post:
+      summary: Submit a new job 
+      description: Submit a new job
+      tags:
+        - Jobs
+        - Parameters
+        - Results
+      parameters:
+        - name: job
+          description: 'a job to be submitted'
+          in: body
+          schema:
+            type: object
+            $ref: '#/definitions/Job'
+          required: true
+      responses:
+        '200':
+          description: 'An object containing the state of the analysis and the result if finished / an error message otherwise.'
+          schema:
+            $ref: '#/definitions/Result'
+        default:
+          description: 'The result object with success false and a description of the problem in the comment field.'
+          schema:
+            $ref: '#/definitions/Result'      
+  /request/submitAsync:
+    post:
+      summary: Submit a new job asynchronously
+      description: Submit a new job asynchronously. This method returns the same result object as the submit method. In contrast, however, it will return an empty result object with success false immediately. The API user is encouraged to use the runStatus method to check if the job is completed and to subsequently use the results method to retrieve an updated results object containing the solutions.
+      tags:
+        - Jobs
+        - Parameters
+      parameters:
+        - name: job
+          description: 'a job to be submitted'
+          in: body
+          schema:
+            type: object
+            $ref: '#/definitions/Job'
+          required: true
+      responses:
+        default:
+          description: 'An object containing the state of the analysis and the result if finished / an error message otherwise.'
+          schema:
+            $ref: '#/definitions/Result'
+  /requests/runStatus:
+    get:
+      summary: Get an update about the progress of a specific job
+      description: After submitting a job asynchronously with submitAsync, this method can be used to query KeyPathwayMinerWeb for the progress of the job. This is useful to create a progress bar and to inform the user when the job is finished.
+      tags:
+        - Jobs
+      parameters:
+        - name: questID
+          description: 'The id of the job to be queried'
+          type: integer
+          in: query
+          required: true
+      responses:
+        default:
+          description: 'The status of the queried job'
+          schema: 
+            $ref: '#/definitions/RunStatus'
+  /requests/results:
+    get:
+      summary: Get the results of a specific job
+      description: After submitting a job asynchronously with submitAsync, this method can be used to retrieve an up-to-date version of the results object. If the job has been completed successfully, this object will contain the solutions. If the job failed, an error message will be included in the comment property. Note that this method should only be used after the runStatus method has returned an objected with the property completed set to true.
+      tags:
+        - Jobs
+        - Results 
+      parameters:
+        - name: questID
+          description: 'The id of the job to be queried'
+          type: integer
+          in: query
+      responses:
+        default:
+          description: 'An object containing the state of the analysis and the result if finished / an error message otherwise.'
+          schema:
+            $ref: '#/definitions/Result'
+definitions:
+  Network:
+    type: object
+    properties:
+      graphId:
+        type: integer
+        description: 'The id of the network'
+      name:
+        type: string
+        description: 'Human readable name of the network'
+  KpmRun: 
+    type: object
+    properties:
+        withPerturbation:
+          type: boolean
+          description: 'If a perturbation technique was used (for robustness analysis in future versions of KeyPathwayMiner Web'
+        parameters:
+          description: 'Detailed parameters'
+          $ref: '#/definitions/RunParameters'
+  RunParameters:
+    type: object
+    properties: 
+      name:
+        type: string
+        description: 'The name of the run. Defaults to the date and time the run was started'
+      algorithm:
+        type: object
+        description: 'The algorithm that was used. Either a heuristic (Greedy or ACO) or exact.'
+      strategy:
+        type: object
+        description: 'The search strategy that was used. Either individual node exceptions (INES) or global node exceptions (GLONE)'
+      k_values:
+        description: 'Definition of the k parameter range in this run (node exceptions)'
+        $ref: '#/definitions/KValues'
+      removeBENs:
+        type: boolean
+        description: 'Whether border exception nodes should be removed.'
+      unmapped_nodes: 
+        type: string
+        description: 'What should be done with unmapped nodes, i.e. should they be added to the positive list (always included in solutions) or to the negative list (categorically ignored).'
+      computed_pathways:
+        type: integer
+        description: 'The number of solutions that should be computed'
+      graphID: 
+        type: integer
+        description: 'The ID of the network that is used'
+      l_values:
+        type: object
+        description: 'Definition of the l parameter range in this run (case exceptions)'
+        $ref: '#/definitions/LValues'
+      l_samePercentage:
+        type: boolean
+        description: 'If multiple datasets are defined, should the same l value be used for all of them (as a percentage?)'
+      samePercentageValue:
+        type: integer
+        description: 'The l percentage value that should be used for multiple datasets'
+      withPerturbation:
+        type: boolean
+        description: 'Whether to perform robustness analysis during the run or not. Available in future versions of KeyPathwayMinerWeb'
+      perturbation:
+        type: object
+        description: 'Parameters for the perturbation of the network in case of a perturbation run (for future versions of KeyPathwayMinerWeb'
+        $ref: '#/definitions/Perturbations'
+      linkType:
+        type: string
+        description: 'Either OR or AND to define how multiple datasets should be combined in the analysis.'
+      attachedToId:
+        type: string
+        description:  'The quest id this job has been attached to.'
+  KValues:
+    type: object
+    properties:
+      val:
+        type: integer
+        description: 'Starting value of k range or k value if k is not ranged'
+      val_step:
+        type: integer
+        description: 'How k should be increased within the range'
+      val_max:
+        type: integer
+        description: 'The maximum k value, i.e. the upper limit of the range'
+      useRange:
+        type: boolean
+        description: 'If k should be ranged'
+      isPercentage:
+        type: boolean
+        description: 'Should the given values be interpreted as percentages?'
+  LValues:
+    type: object
+    properties:
+      val:
+        type: integer
+        description: 'Starting value of l range or l value if l is not ranged'
+      val_step:
+        type: integer
+        description: 'How l should be increased within the range'
+      val_max:
+        type: integer
+        description: 'The maximum l value, i.e. the upper limit of the range'
+      useRange:
+        type: boolean
+        description: 'If l should be ranged'
+      isPercentage:
+        type: boolean
+        description: 'Should the given values be interpreted as percentages?'
+  Perturbations:
+    type: object
+    properties:
+      technique:
+        type: string
+        description: "Perturbation technique, for example 'Node-removal'"
+      startPercent:
+        type: integer
+        description: "Perturbation percentage range lower value"
+      stepPercent:
+        type: integer
+        description: "Perturbation percentage step size"
+      maxPercent:
+        type: integer
+        description: "Perturbation percentage range upper value"
+      graphsPerStep:
+        type: integer
+        description: "Number of random graphs to be created (permutations)"
+  Graph:
+    type: object
+    properties:
+      name:
+        type: string
+        description: 'Name of the network to be analyzed'
+      attachedToId:
+        type: string
+        description: 'Name of the job where the network is supposed to be used'
+      contentBase64:
+        type: string
+        format: byte
+        description: 'Base64 encoded representation of the network. The network file needs to be in Cytoscape SIF format'
+  Dataset:
+    type: object
+    properties:
+      name:
+        type: string
+        description: 'Name of the dataset to be analyzed.'
+      attachedToId:
+        type: string
+        description: 'Name of the job where the network is supposed to be used'
+      contentBase64:
+        type: string
+        format: byte
+        description: 'The input dataset needs to an indicator matrix with a header. Row names are not allowed. The indicator matrix should contain 1s for active and 0s for inactive sample/case - gene/protein interactions. Note that quotes should not be included'
+  Job:
+    type: object
+    properties:
+      parameters:
+        type: object
+        $ref: '#/definitions/RunParameters'
+      datasets:
+        type: array
+        items:
+          $ref: '#/definitions/Dataset'
+      graph:
+        type: object
+        $ref: '#/definitions/Graph'
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+        description: 'error message'
+  ResultNode:
+    type: object
+    properties:
+      gID:
+        type: integer
+        description: 'The database ID of the solution (ResultGraph)'
+      id:
+        type: integer
+        description: 'The database ID of this node'
+      name:
+        type: string
+        description: 'The name of this node, e.g. entrez gene id or gene symbol, ...'
+      overlapCount:
+        type: integer
+        description: 'Only useful for the union graph. How often is this node represented in all solutions?'
+      color:
+        type: string
+        description: 'Only useful for the union graph. An internally used property to color nodes according to the overlapCount'
+  ResultEdge:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: 'The database id of this edge'
+      source:
+        type: integer
+        description: 'The id of the source node of this edge'
+      target:
+        type: integer
+        description: 'The id of the target node of this edge'
+      value:
+        type: number
+        description: 'The edge weight if any'
+      relationshipType:
+        type: string
+        description: 'The type of relationship as defined in the SIF file, e.g. pp for protein interaction'
+  ResultGraph:
+    type: object
+    properties:
+      edges:
+        type: array
+        description: 'set of edges in this solution'
+        items:
+          $ref: '#/definitions/ResultEdge'
+      nodes:
+        type: array
+        description: 'set of nodes in this solutions'
+        items:
+          $ref: '#/definitions/ResultNode'
+      k:
+        type: integer
+        description: 'the selected k value for this solution (node exceptions)'
+      l:
+        type: integer
+        description: 'the selected l value for this solution (case exceptions)'
+      isUnionSet:
+        type: boolean
+        description: 'Is this an ordinary solution (false) or the union of the solutions (true)'
+      nodeSetNr:
+        type: integer
+        description: 'This is solution no. x'
+      maxNodeCount:
+        type: integer
+        description: 'The size of the solution, i.e. the number of nodes'
+  Result:
+    type: object
+    properties:
+      runId:
+        type: integer
+        description: 'The id of the run. Used to look up results'
+      resultGraphs:
+        type: array
+        description: 'An array of solutions returned for the request'
+        $ref: '#/definitions/ResultGraph'
+      comment:
+        type: string
+        description: 'Comment on the outcome of the request. Contains error message in case success is false'
+      success:
+        type: boolean
+        description: 'Whether the request was successfully completed or not'
+      resultUrl:
+        type: string
+        description: 'A URL to the web interface, where the progress and result of the network enrichment can be seen'
+  RunStatus:
+    type: object
+    properties:
+      runExists:
+        type: boolean
+        description: 'Is this actually a valid run/job id?'
+      completed:
+        type: boolean
+        description: 'Has this run/job been completed?'
+      cancelled:
+        type: boolean
+        description: 'Has this run/job been cancelled?'
+      progress:
+        type: number
+        description: 'The progress of this run/job as a percentage'
