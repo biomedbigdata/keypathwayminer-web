@@ -1,3 +1,6 @@
+web-app/default*
+prodDb*
+target/
 .slcache/
 .idea
 keypathwayminer.groovy

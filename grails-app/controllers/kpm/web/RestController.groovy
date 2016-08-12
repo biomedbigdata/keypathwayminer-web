@@ -11,6 +11,7 @@ class RestController extends BaseController {
 
     def graphsService
     def questService
+    def springSecurityService
 
     def network(String name){
 
@@ -48,6 +49,13 @@ class RestController extends BaseController {
 
     def jsonQuests(String attachedToID){
         if(!attachedToID || attachedToID == null){
+            def roles = springSecurityService.getPrincipal().getAuthorities()
+            for(def role in roles) {
+                if (role.getAuthority() == "ROLE_ADMIN") {
+                    def quests = questService.getAllNotFinished();
+                    render quests as JSON
+                }
+            }
             return new ArrayList<Quest>() as JSON;
         }
 

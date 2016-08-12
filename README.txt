@@ -5,7 +5,7 @@ Keypathwayminer web is implemented as a Grails app (v.2.5.3). To compile it you 
 
 mvn install 
 
-in the kpm-core project. Next, install grails v.2.2.4 (for example via gvmtool.net) and call
+in the kpm-core project. Next, install grails v.2.5.3 (for example via gvmtool.net) and call
 
 grails run-app //to run locally from source code
 grails prod war // to create a WAR file suitable for deployment in tomcat 6 or 7.

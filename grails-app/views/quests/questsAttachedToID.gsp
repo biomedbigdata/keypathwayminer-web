@@ -5,25 +5,32 @@
 <script>
     var attachedToID = "${attachedToID}";
     var ticker;
+    var lastKnownQuests;
 
     $(document).ready(function () {
-        if(attachedToID == ""){
-            alert("No attached to ID was found.");
-            return;
-        }
-        // get the quests.
-        getQuests();
+        getQuestsForId();
 
         // Set timer for updating quests.
         ticker = setInterval(function () {
-            console.log('Fetching new quests at: ' + new Date());
-            getQuests();
+            getQuestsForId();
         }, 1000);
-
     });
 
-    function getQuests(){
+    function getQuestsForId(){
         $.post("<g:createLink controller="rest" action="jsonQuests" params="[attachedToID: attachedToID]" />", function( quests ) {
+
+            var currentQuestIds = [];
+            $.each(quests, function(i, quest){
+                currentQuestIds.push(quest.id);
+            });
+
+            if (lastKnownQuests != null) {
+                $.each(lastKnownQuests, function (i, questId) {
+                    if(currentQuestIds.indexOf(questId) == -1) removeQuest(questId);
+                })
+            }
+            lastKnownQuests = currentQuestIds;
+
             if( quests == null || quests.length == 0){
                 console.log( "No quests loaded for attachedToID: " + attachedToID );
                 return;
@@ -70,6 +77,10 @@
     function cancelRun(runID){
 //        alert(runID);
         $.post("<g:createLink absolute="true" controller="runKPM" action="cancelRun"/>?runID="+runID);
+    }
+
+    function removeQuest(questId){
+        $("#quest_"+questId).remove();
     }
 
     function updateQuest(quest){

@@ -318,6 +318,57 @@ public class QuestService {
         }
     }
 
+    public List<Quest> getAllFinished(){
+        return Quest.withTransaction {
+            def results = new ArrayList<Quest>();
+
+            try{
+
+                def quests = Quest.findAll {
+                    isCompleted == true && isCancelled != true
+                }
+
+                if(quests && quests != null && quests.size() > 0){
+                    for(Quest quest : quests){
+                        quest.refresh();
+                        results.add(quest);
+                    }
+                }
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
+            return results;
+        }
+    }
+
+    public List<Quest> getAllCancelled(){
+        return Quest.withTransaction {
+            def results = new ArrayList<Quest>();
+
+            try{
+
+                def quests = Quest.findAll {
+                    isCancelled == true
+                }
+
+                if(quests && quests != null && quests.size() > 0){
+                    for(Quest quest : quests){
+                        quest.refresh();
+                        results.add(quest);
+                    }
+                }
+
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+
+            return results;
+        }
+    }
+
+
     public void updateTitleByRunID(String runID, String newTitle) {
         Quest.withNewSession { hsession ->
             Quest.withNewTransaction { transaction ->

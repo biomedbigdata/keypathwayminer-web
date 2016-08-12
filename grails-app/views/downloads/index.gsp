@@ -10,7 +10,7 @@
 
 <h2 style="margin-top: 50px;">KPM 4.0 Standalone</h2>
 
-<p>We have also developed a standalone version of KPM. You can download
+<p>We have also developed a standalone version of KeyPathwayMiner. You can download
 it as a <a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'KPM-4.0-bin.tar.gz')}">tar</a> or a <a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'KPM-4.0-bin.zip')}">zip</a> file. NOTE: The standalone version available here is still 4.0 and not the latest 5.0. An update to 5.0 is currently under development.</p>
 
 <h2 style="margin-top: 50px;">Sample data</h2>
@@ -21,7 +21,9 @@ it as a <a style="text-decoration: underline;color:#003399;" href="${resource(di
     <a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'hd-exp-entrez.txt')}">Sample gene expression data</a><br>
     <a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'colon-methylation-matrix-0.05.dat')}">Epigenetics (methylation) data</a><br>
     <a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'graph-ulitsky-entrez.sif')}">PPI network from Ulitsky et al. 2008</a><br>
-    <a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'matrix-hd-down.dat')}">Huntington's disease gene expression data</a><br>
+    <a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'matrix-hd-down.dat')}">Huntington's disease gene expression data (down-regulated)</a><br>
+    <a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'matrix-hd-up.dat')}">Huntington's disease gene expression data (up-regulated)</a><br>
+    <a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'htt-relevant.txt')}">Huntington's disease gold standard extracted from KEGG pathways for Calcium signalling and Huntington's disease.</a><br>
 </p>
 
 <h2 style="margin-top: 50px;">Webservice usage example in R:</h2>
