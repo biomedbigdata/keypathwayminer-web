@@ -1,0 +1,3 @@
+[submodule "keypathwayminer-core"]
+	path = keypathwayminer-core
+	url = https://github.com/baumbachlab/keypathwayminer-core.git
