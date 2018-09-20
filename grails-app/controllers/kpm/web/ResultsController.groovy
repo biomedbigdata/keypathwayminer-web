@@ -1,13 +1,13 @@
 package kpm.web
 
 import grails.converters.JSON
+import graphs.ConvertIdsService
 import kpm.web.base.BaseController
 import kpm.web.data.ImageFile
 import kpm.web.kpm.results.CsvFormattedObject
 import kpm.web.kpm.results.ResultGraph
 import kpm.web.kpm.results.ResultNode
 import kpm.web.kpm.results.ResultSet
-import kpm.web.utils.GeneNameUtil
 import kpm.web.utils.GraphUtil
 import kpm.web.utils.StringUtil
 
@@ -92,7 +92,7 @@ class ResultsController extends BaseController{
             for(ResultNode node: resGraph.nodes){
                 nodeLabels.add(node.name);
             }
-            def convertedMap = GeneNameUtil.getConvertedIDs(nodeLabelType,  nodeLabelSubstitute, nodeLabels);
+            def convertedMap = ConvertIdsService.getConvertedIDs(nodeLabelType,  nodeLabelSubstitute, nodeLabels);
 
             resGraph.convertNames(convertedMap);
         }
@@ -143,7 +143,7 @@ class ResultsController extends BaseController{
                 nodeLabels.add(node.name);
             }
 
-            def convertedMap = GeneNameUtil.getConvertedIDs(nodeLabelType,  nodeLabelSubstitute, nodeLabels);
+            def convertedMap = ConvertIdsService.getConvertedIDs(nodeLabelType,  nodeLabelSubstitute, nodeLabels);
 
             resGraph.convertNames(convertedMap);
         }
@@ -192,7 +192,7 @@ class ResultsController extends BaseController{
 
         def nodeIDs = params.get("nodeIDs") as List<String>;
 
-        def res = GeneNameUtil.getConvertedIDs(nodeIdType, replacementIdType, nodeIDs);
+        def res = ConvertIdsService.getConvertedIDs(nodeIdType, replacementIdType, nodeIDs);
 
         render res as JSON;
     }

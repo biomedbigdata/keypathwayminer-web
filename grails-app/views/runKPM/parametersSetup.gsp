@@ -7,9 +7,18 @@
 </head>
 
 <body>
+<div>
+    <h1>Setup: Network</h1>
+</div>
+<div>
+    <g:form controller="runKPM" action="searchButton" method="get">
+        <button  name="species" type="submit" id="search" value="${species}">Search Network</button>
+    </g:form>
+</div>
 <div style="float:left;">
+
 <g:form action="parametersSetup" method="post" name="parameterForm" onsubmit="return checkIterationCount(event);">
-<h1>Setup: Network</h1>
+
 <table class="inputTable" style="min-width:780px;">
 <tr>
     <td>Network:</td>
