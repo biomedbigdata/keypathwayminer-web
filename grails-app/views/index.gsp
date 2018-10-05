@@ -23,13 +23,9 @@
             <td style="vertical-align: middle;"><a href="http://apps.cytoscape.org/apps/keypathwayminer"><img src="http://apps.cytoscape.org/static/common/img/logo.png"></a></td>
             <td style="vertical-align: middle;"><a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'KPM-4.0-bin.zip')}"><img style="width:100px;" src="${resource(dir: 'images', file: 'bash.png')}"/></a></td>
             <td style="vertical-align: middle;"><g:link controller="runKPM" action="index"><img style="width:100px;" src="${resource(dir: 'images', file: 'www.png')}"/></g:link></td>
-            <td style="vertical-align: middle;"><a href="https://youtu.be/tbBTB657-Cw"><img style="width:150px;padding-right:50px;" src="https://www.youtube.com/yt/brand/media/image/YouTube-logo-full_color.png"/></a></td>
+            <td style="vertical-align: middle;"><a href="https://youtu.be/tbBTB657-Cw"><img style="width:100px;padding-right:50px;" src="${resource(dir: 'images', file: 'yt_icon_rgb.png')}"/></a></td>
             <td     title="If you find KeyPathwayMiner useful please cite
-                Alcaraz N, Pauling J, Batra R, Barbosa E, Junge A, Christensen AGL,
-                Azevedo V, Ditzel HJ, Baumbach J (2014) KeyPathwayMiner 4.0:
-                Condition-specific pathway analysis by combining multiple omics
-                studies and networks with Cytoscape. BMC Syst Biol 2014 Aug
-                19;8(1):99."
+                List M, Alcaraz N, Dissing-Hansen M, et al. KeyPathwayMinerWeb: online multi-omics network enrichment. Nucleic Acids Res 2016:gkw373."
                     style="vertical-align: middle;"><g:link controller="about" action="index"><img style="width:100px;" src="${resource(dir: 'images', file: 'cite.png')}"/></g:link></td>
         </tr>
     </table>
