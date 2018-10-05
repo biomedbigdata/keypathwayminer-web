@@ -3,29 +3,50 @@ package kpm.web
 import grails.converters.JSON
 import kpm.web.base.BaseController
 import kpm.web.graph.Graph
-import kpm.web.kpm.parameters.Algorithm
-import kpm.web.kpm.parameters.DatasetFileThreshold
-import kpm.web.kpm.parameters.ExceptionParameters
-import kpm.web.kpm.parameters.KpmParameters
-import kpm.web.kpm.parameters.LParameters
-import kpm.web.kpm.parameters.PerturbationParameters
+import kpm.web.kpm.parameters.*
 import kpm.web.utils.FileUtil
 import kpm.web.utils.FileWithText
-import org.apache.commons.io.IOUtils
 import org.hibernate.Hibernate
 import org.springframework.web.multipart.MultipartFile
 
 class RunKPMController extends BaseController{
+
     def runParametersService
     def datasetFileService
     def graphsService
     def queueService
     def questService
+    def searchNetworkService
 
     def index() {
         runParametersService.newInstance(getUserID());
-
         redirect(action: "setupDatasets");
+    }
+
+    def searchButton(){
+        render(view:"searchNetwork",model:[species:params.species]);
+    }
+
+    def searchNetwork(){
+        def query=params.query;
+        if(query==null||query==''){
+                flash.message = "Nothing entered. Please enter a value.";
+                redirect(action:"searchButton", params: [species : params.species]);
+        }
+        else{
+            def result = searchNetworkService.searchNetwork(query);
+            render(view:"searchNetwork", model:[result : result,species:params.species]);
+        }
+    }
+
+    def downloadNetwork(){
+        String inId=params.netId;
+        UUID id= UUID.fromString(inId);
+        def species=params.hspecies;
+        def result = searchNetworkService.downloadNetwork(id);
+        println id;
+        //netzwerk hier speichern bzw ändern oder in methode parameterssetup
+        redirect(action:"parametersSetup", params: [species : species, network : result]);
     }
 
     def setupDatasets(){
@@ -99,6 +120,7 @@ class RunKPMController extends BaseController{
             flash.message = "No settings found. Session expired. Please start a new run"
             redirect action:"setupDatasets"
         }
+
         def graphs = graphsService.get(getUserID(), true);
 
         if (request.getMethod() != 'POST') {
@@ -124,7 +146,7 @@ class RunKPMController extends BaseController{
             }
             def maxConcurrentRuns = grailsApplication?.config?.kpm?.max?.allowed?.combinations?:20
             render(view: "parametersSetup", model: [currentSetup: settings, graphs: graphs.findAll{it.species == params.species}, datasets: settings.datasetFiles,
-                                                    numberList: numbers, maxConcurrentRuns: maxConcurrentRuns, allowedAlgorithms: allowedAlgorithms, defaultAlgorithm: defaultAlgorithm]);
+                                                    numberList: numbers, maxConcurrentRuns: maxConcurrentRuns, allowedAlgorithms: allowedAlgorithms, defaultAlgorithm: defaultAlgorithm,species:params.species]);
             return;
         } // We only continue with the next part, if we're posting
 

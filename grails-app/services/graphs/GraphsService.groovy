@@ -1,6 +1,6 @@
 package graphs
 
-import grails.util.Holders
+
 import kpm.web.graph.Graph
 import kpm.web.kpm.results.ResultEdge
 import kpm.web.kpm.results.ResultGraph
@@ -74,7 +74,7 @@ class GraphsService {
         }
     }
 
-    public void ensureDefaults(){
+      public void ensureDefaults(){
         def listOfDefaults = new ArrayList<Graph>();
         def defaultDataDir = grailsApplication.getMainContext().getResource("/default_data/graphs").file;
 

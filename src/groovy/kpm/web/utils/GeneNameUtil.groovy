@@ -2,7 +2,6 @@ package kpm.web.utils
 
 import com.github.kevinsawicki.http.HttpRequest
 import groovy.json.JsonSlurper
-
 /**
  * Created by Martin on 01-03-2015.
  */

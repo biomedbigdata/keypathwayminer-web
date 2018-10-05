@@ -2,8 +2,8 @@ grails.servlet.version = "3.0" // Change depending on target container complianc
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
-grails.project.target.level = 1.6
-grails.project.source.level = 1.6
+grails.project.target.level = 1.8
+grails.project.source.level = 1.8
 grails.project.war.file = "target/keypathwayminer.war"//"target/${appName}-${appVersion}.war"
 grails.project.dependency.resolver = "maven" // or ivy
 
@@ -64,6 +64,12 @@ grails.project.dependency.resolution = {
         compile("com.monitorjbl:xlsx-streamer:0.2.12"){ //https://github.com/mlist/excel-streaming-reader
             excludes "xercesImpl"
         }
+        compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.6'
+        compile 'com.fasterxml.jackson.core:jackson-core:2.9.6'
+        compile 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
+        compile 'org.apache.httpcomponents:httpclient:4.5.6'
+        compile 'org.apache.httpcomponents:httpmime:4.5.6'
+
     }
 
     plugins {
