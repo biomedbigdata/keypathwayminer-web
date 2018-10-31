@@ -20,14 +20,11 @@ import kpm.web.kpm.parameters.LParameters
 import kpm.web.kpm.parameters.PerturbationParameters
 import kpm.web.kpm.parameters.RunParameters
 import kpm.web.kpm.parameters.Strategy
-import kpm.web.kpm.results.ResultSet
 import kpm.web.utils.StringUtil
-import kpm.web.utils.progress.Quest
 
-import java.util.concurrent.Callable
 import java.util.logging.Level
 
-public class KpmService {
+class KpmService {
     static transactional = true
     def questService
     def graphsService
@@ -36,7 +33,7 @@ public class KpmService {
     def grailsApplication
     def numericToIndicatorMatrixService
 
-    public boolean start(Long runParamID, Long progressID){
+    boolean start(Long runParamID, Long progressID){
 
         def kpmSettings = new KPMSettings();
 
@@ -315,8 +312,11 @@ public class KpmService {
 
             // Set the number of wanted solutions.
             kpmSettings.NUM_SOLUTIONS = parameters.computed_pathways;
-            if(runParams.linkType.toLowerCase().equals("OR")){
+            if(runParams.linkType.toLowerCase().equals("or")){
                 kpmSettings.COMBINE_OPERATOR = Combine.OR;
+            }
+            if(runParams.linkType.toLowerCase().equals("and")){
+                kpmSettings.COMBINE_OPERATOR = Combine.AND;
             }
 
             kpmSettings.MAIN_GRAPH.setPositiveList(StringUtil.getLines(runParams.positiveNodes));

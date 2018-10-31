@@ -99,13 +99,11 @@ class RunKPMController extends BaseController{
         setup.positiveNodes =  params.get("positiveNodes") as String;
         setup.negativeNodes =  params.get("negativeNodes") as String;
         setup.goldStandardNodes = params.get("goldStandardNodes") as String;
-
         setup.linkType = params.get("linkType") as String;
 
         if(!setup.linkType){
             setup.linkType = "OR";
         }
-
         setup.save(flush: true, validate: true, failOnError: true);
 
         redirect(action:"parametersSetup", params: [species : species]);
