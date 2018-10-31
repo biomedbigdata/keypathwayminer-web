@@ -26,6 +26,12 @@
             <td>Description:</td>
             <td style="text-align: right;"><g:textArea name="description" style="margin:5px;width:250px;"/></td>
         </tr>
+        <sec:ifAnyGranted roles="ROLE_ADMIN">
+        <tr>
+            <td>Default network:</td>
+            <td style="text-align: left;"><g:checkBox name="defaultNetwork" style="margin:5px;width:250px;"/></td>
+        </tr>
+        </sec:ifAnyGranted>
         <tr>
             <td></td>
             <td style="text-align: right;"><input type="submit" value="Upload"/></td>

@@ -1,15 +1,17 @@
 package kpm.web
 
+import kpm.web.authentication.KpmRole
 import kpm.web.base.BaseController
 import kpm.web.exceptions.InvalidSuffixException
 import kpm.web.utils.FileUtil
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.springframework.web.multipart.MultipartFile
 
 class NetworksController extends BaseController{
     def graphsService
 
     def index() {
-        def graphs = graphsService.get(getUserID(), true);
+        def graphs = graphsService.get(getUserID(), true).unique();
         render(view:"index", model: [graphsList: graphs]);
     }
 
@@ -41,7 +43,9 @@ class NetworksController extends BaseController{
                 graph.filename = graphFile.originalFilename;
                 graph.name = name;
                 graph.species = params.species
-                graph.description = description;
+                graph.description = description
+                if(SpringSecurityUtils.ifAllGranted("ROLE_ADMIN"))
+                    graph.isDefault = params.defaultNetwork
 
                 if(graph.name == null){
                     graph.name = graph.filename;
