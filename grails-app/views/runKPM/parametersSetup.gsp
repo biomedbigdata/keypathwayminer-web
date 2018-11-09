@@ -11,9 +11,9 @@
     <h1>Setup: Network</h1>
 </div>
 <div>
-    <!--<g:form controller="runKPM" action="searchButton" method="get">
+    <g:form controller="runKPM" action="searchButton" method="get">
         <button  name="species" type="submit" id="search" value="${species}">Search Network</button>
-    </g:form>-->
+    </g:form>
 </div>
 <div style="float:left;">
 

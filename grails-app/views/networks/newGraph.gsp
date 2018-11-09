@@ -23,6 +23,10 @@
             <td style="text-align: right;padding-right:5px;"><g:select from="${Graph.newInstance().constraints.species.inList}" type="text" name="species" style="margin:5px;width:263px;"/></td>
         </tr>
         <tr>
+            <td>NodeIdType:</td>
+            <td style="text-align: right;padding-right:5px;"><g:select from="${['entrez_id', 'ensembl_gene_id', 'uniprot_ids', 'symbol', 'refseq_accession']}" type="text" name="nodeIdType" style="margin:5px;width:263px;"/></td>
+        </tr>
+        <tr>
             <td>Description:</td>
             <td style="text-align: right;"><g:textArea name="description" style="margin:5px;width:250px;"/></td>
         </tr>

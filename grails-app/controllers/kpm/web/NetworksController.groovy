@@ -20,6 +20,7 @@ class NetworksController extends BaseController{
         def graphFile = params.graphFile as MultipartFile;
         def name = params.graphName as String;
         def description = params.description as String;
+        def nodeIdType = params.nodeIdType as String;
 
         if(!graphFile || graphFile.size == 0){
             flash.message = "No file found. No network uploaded.";
@@ -42,6 +43,7 @@ class NetworksController extends BaseController{
                 graph.name = name;
                 graph.species = params.species
                 graph.description = description;
+                graph.nodeIdType=nodeIdType;
 
                 if(graph.name == null){
                     graph.name = graph.filename;

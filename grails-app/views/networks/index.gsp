@@ -24,6 +24,7 @@
     <tr>
         <td style="vertical-align:middle;"><b>Name</b></td>
         <td style="vertical-align:middle;"><b>Species</b></td>
+        <td style="vertical-align:middle;"><b>NodeIdType</b></td>
         <td style="vertical-align:middle;"><b>Date Uploaded</b></td>
         <td style="vertical-align:middle;"><b>Description</b></td>
         <td style="text-align: right;"><input type="button" id="uploadButton" value="Upload network"/></td>
@@ -33,6 +34,7 @@
             <tr>
                 <td>${graph.name}</td>
                 <td>${graph.species}</td>
+                <td>${graph.nodeIdType}</td>
                 <td><g:formatDate date="${graph.createdDate}" type="date"/></td>
                 <td>${graph.description}</td>
                 <td style="text-align: right;">

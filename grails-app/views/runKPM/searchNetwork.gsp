@@ -27,8 +27,9 @@
             <td style="vertical-align:middle;"><b>Name</b></td>
             <td style="vertical-align:middle;"><b>Description</b></td>
             <td style="vertical-align:middle;"><b>Organism</b></td>
+            <td style="vertical-align:middle;"><b>See Network in NDEX</b></td>
             <td style="vertical-align:middle;"><b>Create Time</b></td>
-            <td style="vertical-align:middle;"><b>Download</b></td>
+            <td style="vertical-align:middle;"><b>Select</b></td>
         </tr>
         <g:if test="${result.numFound>0}">
             <g:each in="${result.networks}" var="net">
@@ -46,11 +47,13 @@
                         </g:if>
                     </g:each>
                     </td>
+                    <td><a href="http://www.ndexbio.org/#/network/${net.externalId}">NDEX</a></td>
                     <td style="width:100px;"><g:formatDate date="${net.creationTime}" type="date"/></td>
                     <td style="width:150px;">
                         <g:form controller="runKPM" action="downloadNetwork" method="post">
                             <input type="hidden" value="${species}" name="hspecies" />
-                            <button  name="netId" type="submit" id="downloadId"  value="${net.externalId}" onclick="return confirm('Download Network?');">Download</button>
+                            <input type="hidden" value='${net.description}' name="descr" />
+                            <button  name="netId" type="submit" id="downloadId"  value="${net.externalId}" onclick="return confirm('Select Network?');">Select</button>
                         </g:form>
                     </td>
                 </tr>

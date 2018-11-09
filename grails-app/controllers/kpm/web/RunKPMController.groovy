@@ -17,6 +17,7 @@ class RunKPMController extends BaseController{
     def queueService
     def questService
     def searchNetworkService
+    def saveNetworkService
 
     def index() {
         runParametersService.newInstance(getUserID());
@@ -43,10 +44,22 @@ class RunKPMController extends BaseController{
         String inId=params.netId;
         UUID id= UUID.fromString(inId);
         def species=params.hspecies;
+        def descr=params.descr;
         def result = searchNetworkService.downloadNetwork(id);
-        println id;
+
+        /**
+         * Iwie auswahl von ids zum parsen machen, und erst in parametersetup speichern
+         */
+        def parsedNetwork =saveNetworkService.parseNetwork(result,"unknown","entrez_id");
+       def saved=saveNetworkService.saveNetwork(parsedNetwork);
+        println(saved);
+        //def graphsaved=saveNetworkService.saveGraph(saved,result.networkName,descr,"entrez_id",species ,this.getUserID());
+        /*if(graphsaved) {
+            println(saved);
+        }
+*/
         //netzwerk hier speichern bzw ändern oder in methode parameterssetup
-        redirect(action:"parametersSetup", params: [species : species, network : result]);
+        redirect(action:"parametersSetup", params: [species : species]);
     }
 
     def setupDatasets(){
@@ -107,7 +120,6 @@ class RunKPMController extends BaseController{
         }
 
         setup.save(flush: true, validate: true, failOnError: true);
-
         redirect(action:"parametersSetup", params: [species : species]);
     }
 

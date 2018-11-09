@@ -13,7 +13,8 @@ public class Graph{
         name = "";
         filename = "";
         description = "";
-        species = ""
+        species = "";
+        nodeIdType="";
         createdDate = new Date();
     }
 
@@ -24,7 +25,7 @@ public class Graph{
     String name
     static hasMany = [relationshipTypes: String]
     Date createdDate
-
+    String nodeIdType
     String content
 
     String species
