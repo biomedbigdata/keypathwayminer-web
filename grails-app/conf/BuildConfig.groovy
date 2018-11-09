@@ -44,7 +44,7 @@ grails.project.dependency.resolution = {
         mavenLocal()
         mavenCentral()
         mavenRepo "http://repo.grails.org/grails/repo/"
-
+        mavenRepo "https://maven.compbio.sdu.dk/repository/internal/"
         // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
         //mavenRepo "http://snapshots.repository.codehaus.org"
         //mavenRepo "http://repository.codehaus.org"
@@ -79,7 +79,7 @@ grails.project.dependency.resolution = {
         runtime ":zipped-resources:1.0"
         runtime ":cached-resources:1.0"
         runtime ":yui-minify-resources:0.1.5"
-
+        runtime ":xss-sanitizer:0.4.2"
         compile ":cache-headers:1.1.7"
         runtime ":database-migration:1.3.2"
 
