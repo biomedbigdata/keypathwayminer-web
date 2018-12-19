@@ -56,7 +56,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
         compile "dk.sdu.kpm:kpm-core:$kpmVersion"
         runtime "net.sourceforge.jtds:jtds:1.3.1" //MS-SQL
-        runtime 'mysql:mysql-connector-java:5.1.22'
+        runtime 'mysql:mysql-connector-java:5.1.45'
         compile 'com.github.kevinsawicki:http-request:5.4.1'
         compile 'com.yahoo.platform.yui:yuicompressor:2.4.8'
         //xlxs file support

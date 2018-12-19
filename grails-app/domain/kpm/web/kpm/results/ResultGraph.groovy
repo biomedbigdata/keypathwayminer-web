@@ -8,6 +8,7 @@ import org.hibernate.annotations.CascadeType
  * Date: 22-09-14
  */
 public class ResultGraph {
+
     public ResultGraph(){
         this.edges = new ArrayList<ResultEdge>();
         this.nodes = new ArrayList<ResultNode>();
@@ -28,7 +29,7 @@ public class ResultGraph {
 
     List edges;
     List nodes;
-
+    @Cascade(CascadeType.ALL)
     static belongsTo = [owner: ResultSet]
     static mapping = {
         csvFormattedEdges type :  'text'

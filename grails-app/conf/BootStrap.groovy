@@ -1,4 +1,6 @@
+import data.CleanUpService
 import grails.converters.JSON
+import kpm.web.OldDataCleanupJob
 import kpm.web.authentication.KpmRole
 import kpm.web.authentication.KpmUser
 import kpm.web.authentication.KpmUserKpmRole
@@ -23,7 +25,7 @@ import org.apache.commons.codec.binary.Base64
 class BootStrap {
     def datasetFileService
     def graphsService
-
+    def CleanUpService
     def init = { servletContext ->
 
         def userRole = KpmRole.findByAuthority('ROLE_USER') ?: new KpmRole(authority: 'ROLE_USER').save(failOnError: true)
@@ -243,6 +245,12 @@ class BootStrap {
 //        quest.attachedToID = "1141pinpin";
 //        quest.createdDate = overAweekAgo;
 //        quest.save(flush: true, validate: true, failOnError: true);
+
+
+
+        //cleanUpService.execute();
+
+
     }
 
     def destroy = {
