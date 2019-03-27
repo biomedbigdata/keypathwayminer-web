@@ -22,6 +22,7 @@
     <button id="search" value="${species}" name="species" type="submit">Search</button>
 </g:form>
 <g:if test="${result !=null}">
+    <div>For larger networks (>100.000 edges) it may take long (15min +)</div>
     <table style="width:1200px;" class="withRowLine">
         <tr>
             <td style="vertical-align:middle;"><b>Name</b></td>
@@ -29,6 +30,8 @@
             <td style="vertical-align:middle;"><b>Organism</b></td>
             <td style="vertical-align:middle;"><b>See Network in NDEX</b></td>
             <td style="vertical-align:middle;"><b>Create Time</b></td>
+            <td style="vertical-align:middle;"><b>Nodes</b></td>
+            <td style="vertical-align:middle;"><b>Edges</b></td>
             <td style="vertical-align:middle;"><b>Select</b></td>
         </tr>
         <g:if test="${result.numFound>0}">
@@ -49,10 +52,13 @@
                     </td>
                     <td><a href="http://www.ndexbio.org/#/network/${net.externalId}">NDEX</a></td>
                     <td style="width:100px;"><g:formatDate date="${net.creationTime}" type="date"/></td>
+                    <td><div id="node" >${net.nodeCount}</div></td>
+                    <td><div id="edge" >${net.edgeCount}</div></td>
                     <td style="width:150px;">
                         <g:form controller="runKPM" action="downloadNetwork" method="post">
                             <input type="hidden" value="${species}" name="hspecies" />
                             <input type="hidden" value='${net.description}' name="descr" />
+                            <input type="hidden" value='${net.name}' name="name" />
                             <button  name="netId" type="submit" id="downloadId"  value="${net.externalId}" onclick="return confirm('Select Network?');">Select</button>
                         </g:form>
                     </td>

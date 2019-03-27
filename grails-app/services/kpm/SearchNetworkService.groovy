@@ -20,11 +20,30 @@ class SearchNetworkService {
 
     }
 
+    /**
+     * searches in NDEx for a network with the query
+     * @param query - query to search for
+     * @return returns network ids who are found to that query
+     */
     public searchNetwork(String query){
        return ndex.findNetworks(query,null,0,1000);
     }
 
+    /**
+     * downloads a NDEx network with a given id
+     * @param id - id of the network
+     * @return downloaded network
+     */
     public downloadNetwork(UUID id){
-       return ndex.getNetwork(id);
+       return ndex.getNetworkSmaller(id)
+    }
+
+    /**
+     * downloads a NDEx network with a given id (returns a stream)
+     * @param id - id of the network
+     * @return stream of the network
+     */
+    public downloadNetworkStream(UUID id) {
+        return ndex.getNetworkAsCXStream(id)
     }
 }

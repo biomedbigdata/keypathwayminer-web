@@ -40,7 +40,7 @@ class ConvertIdsService {
 
             String scope = "";
             if (nodeIdType == "unknown") {
-                scope = "entrezgene,ensembl.gene,uniprot,symbol,refseq.rna";
+                scope = "entrezgene,ensembl.gene,ensembl.protein,uniprot,symbol,refseq.rna";
             } else if (nodeIdType == "entrez_id") {
                 scope = "entrezgene";
             } else if (nodeIdType == "ensembl_gene_id") {
@@ -57,7 +57,7 @@ class ConvertIdsService {
 
             //String urlLink = "http://mygene.info/v3/gene";
             String urlLink = "http://mygene.info/v3/query";
-            String response = HttpRequest.post(urlLink, false, "q", idQuery, "scopes", scope, "fields", "symbol,name,taxid,entrezgene,ensembl.gene,uniprot,refseq.rna")
+            String response = HttpRequest.post(urlLink, false, "q", idQuery, "scopes", scope, "fields", "symbol,name,taxid,entrezgene,ensembl.gene,ensembl.protein,uniprot,refseq.rna,ensembl.protein")
                     .accept("application/json")
                     .body();
             //println(response);

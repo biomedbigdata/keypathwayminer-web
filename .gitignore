@@ -58,3 +58,4 @@ kpm-library/KPMLibrary/logs/*
 *.dvi
 *.lof
 *.lot
+grails-app/jobs/kpm/web/OldDataCleanupJob.groovy

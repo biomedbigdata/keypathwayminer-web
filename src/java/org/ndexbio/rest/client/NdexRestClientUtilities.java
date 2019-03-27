@@ -192,6 +192,40 @@ public class NdexRestClientUtilities {
 	  	    
 	        return niceCX;
 	    }
-	    
+
+	public static NiceCXNetwork getCXNetworkFromStreamSmall( final InputStream in) throws IOException {
+		Set<AspectFragmentReader> readers = new HashSet<>(20);
+		System.out.println("1");
+		readers.add(EdgesFragmentReader.createInstance());
+		System.out.println("2");
+		readers.add(NodesFragmentReader.createInstance());
+		System.out.println("3");
+		CxElementReader2 r = new CxElementReader2(in, readers, true);
+		System.out.println("4");
+
+		long nodeIdCounter = 0;
+		long edgeIdCounter = 0;
+		System.out.println("5");
+		NiceCXNetwork niceCX = new NiceCXNetwork ();
+		System.out.println("6");
+		for ( AspectElement elmt : r ) {
+			switch ( elmt.getAspectName() ) {
+				case NodesElement.ASPECT_NAME :       //Node
+					NodesElement n = (NodesElement) elmt;
+					niceCX.addNode(n);
+					if (n.getId() > nodeIdCounter )
+						nodeIdCounter = n.getId();
+					break;
+				case EdgesElement.ASPECT_NAME:       // Edge
+					EdgesElement ee = (EdgesElement) elmt;
+					niceCX.addEdge(ee);
+					if( ee.getId() > edgeIdCounter)
+						edgeIdCounter = ee.getId();
+					break;
+				}
+		}
+		System.out.println("7");
+		return niceCX;
+	}
 
 }

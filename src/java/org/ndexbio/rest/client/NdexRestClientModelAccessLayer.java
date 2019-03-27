@@ -538,6 +538,13 @@ public NetworkSearchResult findNetworks(
 		}
 	}
 
+	public NiceCXNetwork getNetworkSmaller(UUID id) throws JsonProcessingException, IOException, NdexException {
+
+		try (InputStream is = getNetworkAsCXStream(id)) {
+			return NdexRestClientUtilities.getCXNetworkFromStreamSmall(is);
+		}
+	}
+
 	public InputStream getNetworkAspectElements(UUID id, String aspectName, int limit) throws JsonProcessingException, IOException, NdexException {
 
 		String route = "/network/" + id + "/aspect/"+aspectName + "?size=" + limit;

@@ -24,10 +24,17 @@ class RunKPMController extends BaseController{
         redirect(action: "setupDatasets");
     }
 
+    /**
+        search Network button, if clicked directs to searchNetwork.gsp
+     */
     def searchButton(){
         render(view:"searchNetwork",model:[species:params.species]);
     }
 
+    /**
+     *  searches for networks in NDEx and returns the result
+     * @return shows the found networks on the searchNetwork page
+     */
     def searchNetwork(){
         def query=params.query;
         if(query==null||query==''){
@@ -40,25 +47,30 @@ class RunKPMController extends BaseController{
         }
     }
 
+    /**
+     * downloads the network by id from the NDEx database and saves it to the kpm database
+     * @return redirects to the parametersSetup.gsp page (the downloaded network is now selectable)
+     */
     def downloadNetwork(){
-        String inId=params.netId;
-        UUID id= UUID.fromString(inId);
-        def species=params.hspecies;
-        def descr=params.descr;
-        def result = searchNetworkService.downloadNetwork(id);
-
-        /**
-         * Iwie auswahl von ids zum parsen machen, und erst in parametersetup speichern
-         */
+        String inId=params.netId
+        UUID id= UUID.fromString(inId)
+        def species=params.hspecies
+        def descr=params.descr
+        def name=params.name
+        def result = searchNetworkService.downloadNetwork(id)
+        //TODO id conversion in parseNetwork
         def parsedNetwork =saveNetworkService.parseNetwork(result,"unknown","entrez_id");
-       def saved=saveNetworkService.saveNetwork(parsedNetwork);
-        println(saved);
-        //def graphsaved=saveNetworkService.saveGraph(saved,result.networkName,descr,"entrez_id",species ,this.getUserID());
-        /*if(graphsaved) {
-            println(saved);
+
+        //saves the sif network in a temporary file
+        def saved=saveNetworkService.saveNetwork(parsedNetwork)
+        println(saved)
+
+        //saves the network in the database, returns true if saving worked, else false
+        def graphsaved=saveNetworkService.saveGraph(saved,name,descr,"entrez_id",species ,this.getUserID());
+        if(graphsaved) {
+            println("saved");
         }
-*/
-        //netzwerk hier speichern bzw ändern oder in methode parameterssetup
+
         redirect(action:"parametersSetup", params: [species : species]);
     }
 
