@@ -1,5 +1,7 @@
 First version: Martin Dissing Hansen (martindissing@gmail.com)
-Maintained by: Markus List (markus.list@wzw.tum.de) and Laura Marsoner.
+Maintained by: Markus List (markus.list@wzw.tum.de) 
+
+Alumni: Martin Dissing Hanse, Laura Marsoner.
 
 Keypathwayminer web is implemented as a Grails app (v.2.5.6). To compile it you need kpm-core in your local maven directory, e.g. call
 
@@ -17,3 +19,14 @@ Notes for Tomcat deployment:
 - KPM web reads its config (including database config) from a configuration file keypathwayminer.groovy foudn in Tomcat's conf folder. Again, make sure the tomcat user has write access. See conf/keypathwayminer-example.groovy for an example.
 
 IMPORTANT NOTE: grails 2.5.x is compatible with Java 8 but NOT with Java 9 or newer.
+
+Docker: You can also start KeyPathwayMinerWeb as a docker container: 
+
+Note that you can control the amount of memory used by the docker container via 
+
+```
+docker pull baumbachlab/keypathwayminer-web
+docker run -e GRAILS_OPTS="-XX:MaxPermSize=1024m -Xmx1024M -server" baumbachlab/keypathwayminer-web
+```
+
+**Careful, the database is not hosted persistently and results will be deleted when the container is removed.**
