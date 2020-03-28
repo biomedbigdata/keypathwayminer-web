@@ -22,8 +22,7 @@
             padding: 20px;
             margin: 20px;
             border-radius: 4px;
-            text-align: justify;">Note: Only comma separated (.csv), tab separated (.txt, .dat, .tsv), and
-            Microsoft Excel (.xlsx) files are accepted. The first column is expected to contain gene identifiers that can
+            text-align: justify;">Note: Only comma separated (.csv), tab separated (.txt, .dat, .tsv) are accepted. The first column is expected to contain gene identifiers that can
             be mapped to an interaction network. The first row is expected to contain sample identifiers for each column. </div></td>
         </tr>
         <tr>

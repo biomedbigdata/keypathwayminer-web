@@ -157,17 +157,23 @@ class DatasetFileService {
                             .replace('.', ' ');
                     datasetFile.isDefault = true;
                     datasetFile.species = "Homo sapiens"
+                    datasetFile.description = file.name.toString()
                     datasetFile.type = (splitString[0] == "huntington")?"Numerical Matrix":"Indicator Matrix"
+
                     listOfDefaults.add(datasetFile);
                 }
             }
         }
-
-        DatasetFile.withTransaction {
-            listOfDefaults.each { defaultFile ->
-                defaultFile.save(flush: true, validate: true, failOnError: true);
-                println("|-> Saved " + defaultFile.name);
+        try {
+            DatasetFile.withTransaction {
+                listOfDefaults.each { defaultFile ->
+                    println("|-> Saving " + defaultFile.name);
+                    defaultFile.save(flush: true, validate: true, failOnError: true);
+                    println("|-> Saved " + defaultFile.name);
+                }
             }
+        }catch(Exception e){
+            println e.getMessage();
         }
     }
 }

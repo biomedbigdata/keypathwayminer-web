@@ -102,12 +102,15 @@ class GraphsService {
                 }
             }
         }
-
-        Graph.withTransaction {
-            listOfDefaults.each { defaultGraph ->
-                defaultGraph.save(flush: true, validate: true, failOnError: true);
-                println("|-> Saved " + defaultGraph.name);
+        try {
+            Graph.withTransaction {
+                listOfDefaults.each { defaultGraph ->
+                    defaultGraph.save(flush: true, validate: true, failOnError: true);
+                    println("|-> Saved " + defaultGraph.name);
+                }
             }
+        }catch(Exception e){
+            println e.getMessage()
         }
     }
 
