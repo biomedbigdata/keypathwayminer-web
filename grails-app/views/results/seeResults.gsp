@@ -238,12 +238,12 @@
                 $("#computedSet_value").val("1");
             }
 
-            $.getJSON("<g:createLink controller="results" action="resultInfoTable" params="[runId:runID]" absolute="true"/>"
+            $.getJSON("<g:createLink controller="results" action="resultInfoTable" params="[runId:runID]"/>"
                             +"&k_val="+kVal
                             +"&l_val="+lVal
                     ,drawCsvInfoTable);
 
-            $.getJSON("<g:createLink controller="results" action="resultGraphKL" params="[runId:runID]" absolute="true"/>"
+            $.getJSON("<g:createLink controller="results" action="resultGraphKL" params="[runId:runID]"/>"
                             +"&k_val="+kVal
                             +"&l_val="+lVal
                             +"&computedNodeSetNr="+computedNodeSetNr
@@ -259,7 +259,7 @@
             $("#computedSet_value").val("0");
             var kVal = $("#k_value").val();
             var lVal = $("#l_value").val();
-            $.getJSON("<g:createLink controller="results" action="resultGraphKLUnionSet" params="[runId:runID]" absolute="true"/>"
+            $.getJSON("<g:createLink controller="results" action="resultGraphKLUnionSet" params="[runId:runID]" />"
                             +"&k_val="+kVal
                             +"&l_val="+lVal
                             +"&switchNodeLabels="+switchNodeLabels
@@ -267,11 +267,11 @@
                             +"&nodeLabelSubstitute="+nodeLabelSubstitute
                     , drawSigmaGraph);
 
-            $.getJSON("<g:createLink controller="results" action="resultInfoTable" params="[runId:runID]" absolute="true"/>"
+            $.getJSON("<g:createLink controller="results" action="resultInfoTable" params="[runId:runID]" />"
                             +"&k_val="+kVal
                             +"&l_val="+lVal
                     ,drawCsvInfoTable);
-            $.getJSON("<g:createLink controller="results" action="resultUnionGraphColors" params="[runId:runID]" absolute="true"/>"
+            $.getJSON("<g:createLink controller="results" action="resultUnionGraphColors" params="[runId:runID]" />"
                             +"&k_val="+kVal
                             +"&l_val="+lVal
                     , drawColorLegend);
@@ -280,7 +280,7 @@
 
         var kVal = $("#k_value").val();
         var lVal = $("#l_value").val();
-        $.getJSON("<g:createLink controller="results" action="resultInfoTable" params="[runId:runID]" absolute="true"/>"
+        $.getJSON("<g:createLink controller="results" action="resultInfoTable" params="[runId:runID]" />"
                         +"&k_val="+kVal
                         +"&l_val="+lVal
                 ,drawCsvInfoTable);
@@ -296,7 +296,7 @@
 
             var form = document.createElement("form");
             form.setAttribute("method", "post");
-            form.setAttribute("action", "<g:createLink controller="results" action="getTextAsFile" absolute="true"/>");
+            form.setAttribute("action", "<g:createLink controller="results" action="getTextAsFile"/>");
             var params = {
                 "fileName": "sif-file.sif",
                 "text": sifText
@@ -327,7 +327,7 @@
 
             var form = document.createElement("form");
             form.setAttribute("method", "post");
-            form.setAttribute("action", "<g:createLink controller="results" action="getTextAsFile" absolute="true"/>");
+            form.setAttribute("action", "<g:createLink controller="results" action="getTextAsFile"/>");
             var params = {
                 "fileName": "nodeIDs.txt",
                 "text": nodesText

@@ -316,7 +316,7 @@ class RunParametersService {
                 }
 
                 if(k_values.val < 0){
-                    throw new InvalidRequestException("Field k_values.val must be > 0.");
+                    throw new InvalidRequestException("Field k_values.val must be >= 0.");
                 }
 
                 def mustHaveRangeValues = false;
