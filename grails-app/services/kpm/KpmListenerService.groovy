@@ -220,20 +220,7 @@ class KpmListenerService implements IKPMRunListener{
                     }
                 }
             }
-
-            String csvEdges = "";
-            for(ResultEdge edge : edgeMap.values()){
-                csvEdges += edge.toCSVFormat() + System.lineSeparator();
-                resGraph.addToEdges(edge)
-            }
-            String csvNodes = "";
-            for(ResultNode node : nodeMap.values()){
-                csvNodes += node.toCSVFormat() + System.lineSeparator();
-                resGraph.addToNodes(node)
-            }
-
-            resGraph.csvFormattedEdges = csvEdges;
-            resGraph.csvFormattedNodes = csvNodes;
+            
             resGraph.maxNodeCount = maxAmount;
             resGraph.isUnionSet = isUnionSet;
             resGraph.nodeSetNr = nodeSetNr;

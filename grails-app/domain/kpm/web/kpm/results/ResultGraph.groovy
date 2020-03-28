@@ -23,38 +23,16 @@ public class ResultGraph {
     int nodeSetNr
     int maxNodeCount
     boolean isUnionSet
-    String csvFormattedEdges;
-    String csvFormattedNodes;
 
     List edges;
     List nodes;
 
     static belongsTo = [owner: ResultSet]
-    static mapping = {
-        csvFormattedEdges type :  'text'
-        csvFormattedNodes type :  'text'
-    }
 
     static hasMany = [
         edges: ResultEdge,
         nodes: ResultNode
     ]
-
-    /*public void fillEdgeAndNodeLists(){
-        String[] csvEdges = csvFormattedEdges.split(System.lineSeparator());
-        for(String edge : csvEdges){
-            if(edge != ""){
-                edges.add(new ResultEdge(edge));
-            }
-        }
-
-        String[] csvNodes = csvFormattedNodes.split(System.lineSeparator());
-        for(String node : csvNodes){
-            if(node != ""){
-                nodes.add(new ResultNode(node));
-            }
-        }
-    }*/
 
     public void convertNames(Map<String, String> nameChangeMap) {
         for(ResultNode node : nodes){
