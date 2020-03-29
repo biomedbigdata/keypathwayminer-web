@@ -21,7 +21,7 @@
             <td>Cite</td>
         </tr>
         <tr>
-            <td style="vertical-align: middle;"><a href="http://apps.cytoscape.org/apps/keypathwayminer"><img src="http://apps.cytoscape.org/static/common/img/logo.png"></a></td>
+            <td style="vertical-align: middle;"><a href="http://apps.cytoscape.org/apps/keypathwayminer"><img src="https://apps.cytoscape.org/static/common/img/logo.png"></a></td>
             <td style="vertical-align: middle;"><a style="text-decoration: underline;color:#003399;" href="${resource(dir: 'downloads', file: 'KPM-4.0-bin.zip')}"><img style="width:100px;" src="${resource(dir: 'images', file: 'bash.png')}"/></a></td>
             <td style="vertical-align: middle;"><g:link controller="runKPM" action="index"><img style="width:100px;" src="${resource(dir: 'images', file: 'www.png')}"/></g:link></td>
             <td style="vertical-align: middle;"><a href="https://youtu.be/tbBTB657-Cw"><img style="width:100px;padding-right:50px;" src="${resource(dir: 'images', file: 'yt_icon_rgb.png')}"/></a></td>
