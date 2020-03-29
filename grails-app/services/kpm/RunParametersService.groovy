@@ -1,6 +1,7 @@
 package kpm
 
 import dk.sdu.kpm.logging.KpmLogger
+import grails.transaction.Transactional
 import kpm.web.data.DatasetFile
 import kpm.web.exceptions.InvalidRequestException
 import kpm.web.exceptions.UnknownQuestException
@@ -13,6 +14,7 @@ import org.hibernate.Hibernate
 
 import java.util.logging.Level
 
+@Transactional
 class RunParametersService {
     static transactional = true
     def datasetFileService
@@ -385,43 +387,33 @@ class RunParametersService {
     }
 
     public void delete(Long runParameterID){
-        def run = RunParameters.get(runParameterID);
+        def run = RunParameters.get(runParameterID)
         if(!run){
-            return;
+            return
         }
+        try {
+            if (run.parameters != null) {
 
-        if(run.parameters != null){
-
-            def k_values = ExceptionParameters.findByOwner(run.parameters);
-            if(k_values != null){
-                k_values.delete(flush: true, validate: true, failOnError: true);
-                println("k_values removed.");
-            }
-
-            def l_values = LParameters.findAllByOwner(run.parameters);
-            if(l_values.size() > 0){
-                LParameters.deleteAll(l_values);
-                println("l_values removed.");
-            }
-
-        }
-
-        // delete results
-        if(run.runID != ""){
-            def results = ResultSet.findAllByRunID(run.runID).toList();
-            for(ResultSet result: results){
-                def resultGraphs = ResultGraph.findAllByOwner(result).toList();
-                for(ResultGraph graph: resultGraphs){
-                    graph.delete(flush: true, validate: true, failOnError: true);
+                def k_values = ExceptionParameters.findByOwner(run.parameters);
+                if (k_values != null) {
+                    k_values.delete(flush: true, validate: true, failOnError: true);
+                    println("k_values removed.");
                 }
 
-                result.delete(flush: true, validate: true, failOnError: true);
-            }
-        }
+                def l_values = LParameters.findAllByOwner(run.parameters);
+                if (l_values.size() > 0) {
+                    LParameters.deleteAll(l_values);
+                    println("l_values removed.");
+                }
 
-        // KpmParameters and Perturbation parameters are deleted through cascade settings.
-        run.delete(flush: true, validate: true, failOnError: true);
-        println("run deleted");
+            }
+
+            // KpmParameters and Perturbation parameters are deleted through cascade settings.
+            run.delete(flush: true, validate: true, failOnError: true);
+            println("run deleted");
+        } catch(Exception e){
+            println e.getMessage()
+        }
     }
 
     public void reset(String attachedToID){

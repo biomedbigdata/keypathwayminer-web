@@ -15,6 +15,8 @@ public class ResultNode {
         color = "#ccc";
     }
 
+    static belongsTo = ResultGraph
+
     public ResultNode(String csvFormattedNode){
         this();
 

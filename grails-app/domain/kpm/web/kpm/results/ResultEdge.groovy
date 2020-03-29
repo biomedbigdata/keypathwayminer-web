@@ -8,6 +8,9 @@ package kpm.web.kpm.results
  * To change this template use File | Settings | File Templates.
  */
 public class ResultEdge {
+
+    static belongsTo = ResultGraph
+
     public ResultEdge(){
         source = "";
         target = "";

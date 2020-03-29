@@ -220,7 +220,14 @@ class KpmListenerService implements IKPMRunListener{
                     }
                 }
             }
-            
+
+            for(ResultEdge edge : edgeMap.values()){
+                resGraph.addToEdges(edge)
+            }
+            for(ResultNode node : nodeMap.values()){
+                resGraph.addToNodes(node)
+            }
+
             resGraph.maxNodeCount = maxAmount;
             resGraph.isUnionSet = isUnionSet;
             resGraph.nodeSetNr = nodeSetNr;
