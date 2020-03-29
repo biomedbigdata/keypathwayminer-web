@@ -52,11 +52,20 @@ class QueueService {
                     continue;
                 }
                 quest.refresh();
+
+                // remove jobs that have been running for an hour already
+                Date oneHourAgo = new Date(System.currentTimeMillis() - 3600 * 1000)
+
+                if(quest.createdDate < oneHourAgo){
+                    quest.setIsCancelled(true)
+                }
+
                 if(quest.isCancelled || quest.isCompleted){
                     println("Quest with ID $queueItem.progressID finished/cancelled.");
                     queueItem.isRunning = false;
                     queueItem.save(flush: true, validate: true, failOnError: true);
                 }
+
             }
 
             // Delete old quests that have been run
