@@ -1,4 +1,7 @@
+import data.DeletionService
 import grails.converters.JSON
+import kpm.web.KpmQueueHandlerJob
+import kpm.web.OldDataCleanupJob
 import kpm.web.authentication.KpmRole
 import kpm.web.authentication.KpmUser
 import kpm.web.authentication.KpmUserKpmRole
@@ -23,6 +26,9 @@ import org.apache.commons.codec.binary.Base64
 class BootStrap {
     def datasetFileService
     def graphsService
+    def deletionService
+    def runParametersService
+    def kpmListenerService
 
     def init = { servletContext ->
 
@@ -221,28 +227,19 @@ class BootStrap {
             return output
         }
 
+        println "Cancelling old jobs that might have been interrupted"
+        Quest.findAllByIsCompletedAndIsCancelled(false, false).each{
+            kpmListenerService.runCancelled("due to restart", it.runID)
+        }
 
         System.out.println("\n| Adding default datasets if necessary:");
-        datasetFileService.ensureDefaults();
+	    datasetFileService.ensureDefaults();
         System.out.println("| Finished adding default dataset files.");
 
         System.out.println("\n| Adding default networks if necessary:");
-        graphsService.ensureDefaults();
+        	graphsService.ensureDefaults();
         System.out.println("| Finished adding network files.");
 
-//        System.out.println("Adding test old stuff");
-//        Date today = new Date().clearTime();
-//        Date overAweekAgo = (today - 12).clearTime() - 1;
-//        def datasetFile = new DatasetFile();
-//        datasetFile.createdDate = overAweekAgo;
-//        datasetFile.save(flush: true, validate: true, failOnError: true);
-//        def imageFile = new ImageFile();
-//        imageFile.createdDate = overAweekAgo;
-//        imageFile.save(flush: true, validate: true, failOnError: true);
-//        def quest = new Quest();
-//        quest.attachedToID = "1141pinpin";
-//        quest.createdDate = overAweekAgo;
-//        quest.save(flush: true, validate: true, failOnError: true);
     }
 
     def destroy = {
