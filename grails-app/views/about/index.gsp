@@ -42,6 +42,8 @@ If you find KeyPathwayMiner useful please cite
 <h1 style="clear:both; margin-top: 100px;">Other References</h1>
 
 <ol style="max-width: 1000px;">
+    <li>List M, Alcaraz N, Batra R (2019) De Novo Pathway-Based Classification of Breast Cancer Subtypes. In: Canzar S, Ringeling FR. (eds) Protein-Protein Interaction Networks: Methods and Protocols. Methods in Molecular Biology, vol 2074, pp 201-213. Spring Science, Humana Press, New York, NY.</li>
+    <li>Alcaraz N, Hartebrodt A, List M (2019) De Novo Pathway Enrichment with KeyPathwayMiner. In: Canzar S, Ringeling FR. (eds) Protein-Protein Interaction Networks: Methods and Protocols. Methods in Molecular Biology, vol 2074, pp 181-199 Spring Science, Humana Press, New York, NY.</li>
     <li>Alcaraz N, List M, Dissing-Hansen M, et al. Robust de novo pathway enrichment with KeyPathwayMiner 5. F1000Res 2016;5:1531. (<a style="text-decoration: underline;color:#003399;" target="_blank" href="http://dx.doi.org/10.12688/f1000research.9054.1">download from F1000</a>)</li>
     <li>Alcaraz N, Pauling J, Batra R, Barbosa E, Junge A, Christensen AGL,
     Azevedo V, Ditzel HJ, Baumbach J (2014) KeyPathwayMiner 4.0:

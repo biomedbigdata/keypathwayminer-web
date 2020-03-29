@@ -31,6 +31,16 @@
         </tr>
     </table>
 
+    <div style="
+    max-width: 800px;
+    background: #bad5f3;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 4px;
+    text-align: justify;">
+    KeyPathwayMiner was relocated to its new home at the Chair of Experimental Bioinformatics at TU Munich. Please be aware that this is a fresh database, i.e. you might want to set up a new user account.
+    </div>
+
     <h1>How does KeyPathwayMiner work?</h1>
     <div style="width: 1200px;">
     <div style="float: left;">
@@ -47,6 +57,7 @@
             <li>Version 4.0 can further added support for integrating existing knowledge by adding a search
             bias towards sub-networks that contain (avoid) genes provided in a positive (negative) list.</li>
             <li>The latest version 5.0 added extensive support for evaluating the robustness of the results upon perturbation of the network.</li>
+            <li>Please note that the web application will delete after 7 days for anonymous users / guests.</li>
         </ul>
     </div>
 
