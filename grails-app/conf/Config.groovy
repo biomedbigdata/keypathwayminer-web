@@ -155,9 +155,11 @@ grails.gorm.failOnError=true
 grails.mail.disabled=true
 
 //KPM default config
-kpm.max.concurrent.runs = 1
-//kpm.allowed.algorithms = ["Greedy"] // Note case-sensitivity
-//kpm.max.allowed.combinations = 20
+kpm.max.concurrent.runs = 5
+kpm.allowed.algorithms = ["Greedy", "ACO"] // Note case-sensitivity
+kpm.max.allowed.combinations = 20
+kpm.num.of.cores = 10
+
 kpm.quests.killall.password = "thisistheomegapassword"
 
 //KPM read config file from tomcat server dir
