@@ -20,11 +20,15 @@ apt-get install -y maven && \
 mvn install && \ 
 cd .. && \
 grails refresh-dependencies && \ 
-grails compile
+grails compile && \
+grails prod war
+
+RUN curl -O http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-7.0.55.tar.gz
+RUN tar xzf apache-tomcat-7.0.55.tar.gz
+
+CMD cp target/*.war apache-tomcat-7.0.55/webapps/
+
+CMD apache-tomcat-7.0.55/bin/startup.sh && tail -f apache-tomcat-7.0.55/logs/catalina.out
 
 # Expose port to outside world
 EXPOSE 8080
-
-# Start grails app
-ENTRYPOINT ["/sbin/my_init", "grails"]
-CMD ["prod", "run-app"]
