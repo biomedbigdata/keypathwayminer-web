@@ -135,13 +135,15 @@ class RunKPMController extends BaseController{
                     def alg = Algorithm.valueOf(allowed); // Note case-sensitivity
                     if (alg != null) {
                         allowedAlgorithms.add(alg);
-                        defaultAlgorithm = alg;
                     }
                 }
             } else{
                 allowedAlgorithms.addAll([Algorithm.Greedy, Algorithm.ACO, Algorithm.Exact])
-                defaultAlgorithm = Algorithm.Greedy
             }
+
+            if(allowedAlgorithms.contains(Algorithm.Greedy)) defaultAlgorithm = Algorithm.Greedy
+            else defaultAlgorithm = allowedAlgorithms.get(0)
+
             def maxConcurrentRuns = grailsApplication?.config?.kpm?.max?.allowed?.combinations?:20
             render(view: "parametersSetup", model: [currentSetup: settings, graphs: graphs.findAll{it.species == params.species}, datasets: settings.datasetFiles,
                                                     numberList: numbers, maxConcurrentRuns: maxConcurrentRuns, allowedAlgorithms: allowedAlgorithms, defaultAlgorithm: defaultAlgorithm,species:params.species]);

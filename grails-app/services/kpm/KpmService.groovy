@@ -245,6 +245,7 @@ class KpmService {
             int maxNumOfCores = Math.max(1, Runtime.getRuntime().availableProcessors() - 1);
             int numOfCores = grailsApplication?.config?.kpm?.num?.of?.cores?:10
             if(numOfCores > maxNumOfCores) numOfCores = maxNumOfCores
+            
             kpmSettings.NUMBER_OF_PROCESSORS = numOfCores
 
             // Creating the KPMGraph, and updating the kpmSettings.
