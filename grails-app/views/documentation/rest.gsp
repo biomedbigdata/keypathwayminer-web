@@ -352,7 +352,7 @@ font-style: italic;
   <div class="method"><a name="requestsResultsGet"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /requests/results</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /requests/results</code></pre></div>
     <div class="method-summary">Get the results of a specific job (<span class="nickname">requestsResultsGet</span>)</div>
     
     <div class="method-notes">After submitting a job asynchronously with submitAsync, this method can be used to retrieve an up-to-date version of the results object. If the job has been completed successfully, this object will contain the solutions. If the job failed, an error message will be included in the comment property. Note that this method should only be used after the runStatus method has returned an objected with the property completed set to true.</div>
@@ -411,7 +411,7 @@ font-style: italic;
   <div class="method"><a name="requestsRunStatusGet"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /requests/runStatus</code></pre></div>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /requests/runStatus</code></pre></div>
     <div class="method-summary">Get an update about the progress of a specific job (<span class="nickname">requestsRunStatusGet</span>)</div>
     
     <div class="method-notes">After submitting a job asynchronously with submitAsync, this method can be used to query KeyPathwayMinerWeb for the progress of the job. This is useful to create a progress bar and to inform the user when the job is finished.</div>
