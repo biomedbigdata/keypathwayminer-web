@@ -33,7 +33,14 @@ class RestController extends BaseController {
     }
 
     def availableNetworks(){
-        def graphsList = Graph.findAllByIsDefault(true);
+        def graphsList
+
+        if(request.getParameterMap().containsKey("attachedToId")){
+            graphsList = graphsService.get(request.getParameter("attachedToId"), true)
+        } else {
+            graphsList = Graph.findAllByIsDefault(true);
+        }
+
         if(graphsList.size() == 0)
             render JsonOutput.toJson([message: "No networks found"])
         else render graphsList as JSON;

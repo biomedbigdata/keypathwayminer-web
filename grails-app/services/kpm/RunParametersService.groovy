@@ -83,11 +83,18 @@ class RunParametersService {
         return settings;
     }
 
-    public Long createFromJSON(HashMap<String, Object> result, HashSet<DatasetFile> datasets) throws InvalidRequestException{
-        def  attachedToID = new String();
+    public Long createFromJSON(HashMap<String, Object> runParamsMap, HashSet<DatasetFile> datasets, HashMap<String, Object> graphMap) throws InvalidRequestException{
+        def attachedToID = new String();
 
-        if(RequestUtil.ContainsKeyOrThrow(result, "attachedToID")){
-            attachedToID = result["attachedToID"] as String;
+        if(RequestUtil.ContainsKeyOrThrow(runParamsMap, "attachedToID")){
+            attachedToID = runParamsMap["attachedToID"] as String;
+        }
+
+        def uploadedGraphID
+
+        if(graphMap != null && graphMap.size() > 0){
+            def graph = new Graph().updateValuesByJSON(graphMap);
+            uploadedGraphID = graph.id
         }
 
         def runParams = newInstance(attachedToID);
@@ -100,35 +107,35 @@ class RunParametersService {
             runParams.datasetFiles.add(it);
         }
 
-        if(result.containsKey("withPerturbation")){
-            runParams.withPerturbation = result["withPerturbation"].equals("true");
+        if(runParamsMap.containsKey("withPerturbation")){
+            runParams.withPerturbation = runParamsMap["withPerturbation"].equals("true");
         }else{
             runParams.withPerturbation = false;
         }
 
-        if(result.containsKey("linkType")){
-            runParams.linkType = result["linkType"] as String;
+        if(runParamsMap.containsKey("linkType")){
+            runParams.linkType = runParamsMap["linkType"] as String;
         }
 
-        if(result.containsKey("goldStandardNodes")){
-            runParams.goldStandardNodes = result["goldStandardNodes"] as String;
+        if(runParamsMap.containsKey("goldStandardNodes")){
+            runParams.goldStandardNodes = runParamsMap["goldStandardNodes"] as String;
         }
 
-        if(RequestUtil.ContainsKeyOrThrow(result, "attachedToID")){
-            runParams.attachedToID = result["attachedToID"] as String;
+        if(RequestUtil.ContainsKeyOrThrow(runParamsMap, "attachedToID")){
+            runParams.attachedToID = runParamsMap["attachedToID"] as String;
         }
 
-        if(result.containsKey("positiveNodes")){
-            runParams.positiveNodes = result["positiveNodes"] as String;
+        if(runParamsMap.containsKey("positiveNodes")){
+            runParams.positiveNodes = runParamsMap["positiveNodes"] as String;
         }
 
-        if(result.containsKey("negativeNodes")){
-            runParams.negativeNodes = result["negativeNodes"] as String;
+        if(runParamsMap.containsKey("negativeNodes")){
+            runParams.negativeNodes = runParamsMap["negativeNodes"] as String;
         }
 
         if(runParams.withPerturbation){
-            if(RequestUtil.ContainsKeyOrThrow(result,"perturbation")){
-                def res = result["perturbation"] as HashMap<String, Object>;
+            if(RequestUtil.ContainsKeyOrThrow(runParamsMap,"perturbation")){
+                def res = runParamsMap["perturbation"] as HashMap<String, Object>;
                 if(RequestUtil.ContainsKeyOrThrow(res, "technique")){
                     runParams.perturbation.technique = res["technique"] as String;
                 }
@@ -151,8 +158,8 @@ class RunParametersService {
             }
         }
 
-        if(RequestUtil.ContainsKeyOrThrow(result,"parameters")){
-            def kpmParamMap = result["parameters"] as HashMap<String, Object>;
+        if(RequestUtil.ContainsKeyOrThrow(runParamsMap,"parameters")){
+            def kpmParamMap = runParamsMap["parameters"] as HashMap<String, Object>;
 
             if(RequestUtil.ContainsKeyOrThrow(kpmParamMap,"name")){
                 runParams.parameters.name = kpmParamMap["name"] as String;
@@ -177,39 +184,45 @@ class RunParametersService {
             if(RequestUtil.ContainsKeyOrThrow(kpmParamMap,"computed_pathways")){
                 runParams.parameters.computed_pathways = kpmParamMap["computed_pathways"] as int;
             }
+            // Try the following networks in order of preference: uploaded graph (with submission, graphID, graphName)
+            if(uploadedGraphID){
+                runParams.parameters.graphID = uploadedGraphID
 
-            def mustHaveGraphName = false;
-            if(kpmParamMap.containsKey("graphID")){
-                Long graphID;
-                try{
-                    graphID = kpmParamMap["graphID"] as Long;
-                }catch(Exception e){
-                    KpmLogger.log(Level.WARNING, e);
-                    throw new InvalidRequestException("Graph ID '"+kpmParamMap["graphID"]+"' could not be parsed to a Long.");
-                }
-
-                def graph = Graph.get(graphID);
-                if(!graph){
-                    mustHaveGraphName = true;
-                }else{
-                    runParams.parameters.graphID = graph.id;
-                }
-
-            }else{
-                mustHaveGraphName = true;
-            }
-
-            if(mustHaveGraphName){
-                if(RequestUtil.ContainsKeyOrThrow(kpmParamMap,"graphName")){
-                    def graphName = kpmParamMap["graphName"] as String;
-                    def graph = graphsService.get(attachedToID, graphName);
-                    if(graph == null){
-                        throw new InvalidRequestException("Graph was not found in database. (Graph name: '$graphName', attached to ID: '$attachedToID')");
+            } else {
+                def useGraphName = false;
+                if(kpmParamMap.containsKey("graphID")){
+                    Long graphID;
+                    try{
+                        graphID = kpmParamMap["graphID"] as Long;
+                    }catch(Exception e){
+                        KpmLogger.log(Level.WARNING, e);
+                        throw new InvalidRequestException("Graph ID '"+kpmParamMap["graphID"]+"' could not be parsed to a Long.");
                     }
 
-                    runParams.parameters.graphID = graph.id;
+                    def graph = Graph.get(graphID);
+                    if(!graph){
+                        useGraphName = true;
+                    }else{
+                        runParams.parameters.graphID = graph.id;
+                    }
+
+                }else{
+                    useGraphName = true;
+                }
+
+                if(useGraphName){
+                    if(RequestUtil.ContainsKeyOrThrow(kpmParamMap,"graphName")){
+                        def graphName = kpmParamMap["graphName"] as String;
+                        def graph = graphsService.get(attachedToID, graphName);
+                        if(graph == null){
+                            throw new InvalidRequestException("Graph was not found in database. (Graph name: '$graphName', attached to ID: '$attachedToID')");
+                        }
+
+                        runParams.parameters.graphID = graph.id;
+                    }
                 }
             }
+
             if(kpmParamMap.containsKey("samePercentage_val")){
                 runParams.parameters.samePercentage_val = kpmParamMap["samePercentage_val"] as int;
             }else if(runParams.parameters.l_samePercentage){

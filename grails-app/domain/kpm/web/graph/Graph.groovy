@@ -71,6 +71,7 @@ public class Graph{
                 println it
             }
         }
+        return this;
     }
 
     String toString(){

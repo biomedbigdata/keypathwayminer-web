@@ -3,6 +3,7 @@ package kpm.web
 import grails.converters.JSON
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import kpm.RunParametersService
 import kpm.web.base.BaseController
 import kpm.web.data.DatasetFile
 import kpm.web.exceptions.InvalidRequestException
@@ -32,12 +33,12 @@ public class RequestsController extends BaseController{
 
         def slurper = new JsonSlurper();
 
+        // Parse new graph or network
+        HashMap<String, Object> graphMap = new HashMap<String, Object>()
         if(jsonGraph != null && jsonGraph != ""){
-            def graphMap = slurper.parseText(jsonGraph) as HashMap<String, Object>;
-            if(graphMap != null && graphMap.size() > 0){
-                def graph = new Graph().updateValuesByJSON(graphMap);
-            }
+            graphMap = slurper.parseText(jsonGraph) as HashMap<String, Object>;
         }
+
         // Parsing the datasets:
         def datasetMap = slurper.parseText(jsonDatasets) as ArrayList<HashMap<String, Object>>;
 
@@ -53,7 +54,7 @@ public class RequestsController extends BaseController{
         // Parsing the run parameters.
         def runParamsMap = slurper.parseText(jsonRunParameters) as HashMap<String, Object>;
 
-        def runParamsID = runParametersService.createFromJSON(runParamsMap, datasets);
+        def runParamsID = runParametersService.createFromJSON(runParamsMap, datasets, graphMap);
 
         return RunParameters.get(runParamsID);
     }
@@ -267,6 +268,40 @@ public class RequestsController extends BaseController{
         render res as JSON;
     }
 
+    def uploadNetwork(){
+        def res = new RequestAnswer();
+
+        // Check for missing parameters and terminate if necessary, parse if all are populated
+        def missingParameters = [];
+
+        if (!request.getParameter("name")) { missingParameters.add("name") };
+        if (!request.getParameter("attachedToID")) { missingParameters.add("attachedToID") };
+        if (!request.getParameter("contentBase64")) { missingParameters.add("contentBase64") };
+
+        if(missingParameters){
+            res.comment = "The following network-parameters are missing: " + missingParameters.join(", ");
+            res.success = false;
+            render res as JSON;
+            return;
+        }
+
+
+        HashMap<String, String> request_hash = new HashMap<>()
+        for(String header : request.getParameterNames()){
+            request_hash.put(header, request.getParameter(header))
+        }
+
+        def Graph = new Graph().updateValuesByJSON(request_hash)
+
+        // TODO add correct response and catch errors
+        res.success = true;
+        res.comment = "Network uploaded.\n" + Graph
+
+        render res as JSON;
+
+
+    }
+
     def results(){
         def res = new RequestAnswer();
 
@@ -338,24 +373,24 @@ public class RequestsController extends BaseController{
         render res as JSON;
     }
 
-    def quests(String attachedToId, boolean hideTitle){
-
-        if(attachedToId == null || attachedToId.isEmpty()){
-            render "No attachedToID.";
-            return;
-        }
-
-        if(hideTitle == null){
-            hideTitle = false;
-        }
-
-        def quests =  questService.getAllAttachedToId(attachedToId);
-        if(quests.size() == 0){
-            render "Found no quests/runs attached to the ID: $attachedToId.";
-            return;
-        }
-
-        render(view: "quests", model: [quests : quests, attachedToID : attachedToId, hideTitle : hideTitle]);
-    }
+//    def quests(String attachedToId, boolean hideTitle){
+//
+//        if(attachedToId == null || attachedToId.isEmpty()){
+//            render "No attachedToID.";
+//            return;
+//        }
+//
+//        if(hideTitle == null){
+//            hideTitle = false;
+//        }
+//
+//        def quests =  questService.getAllAttachedToId(attachedToId);
+//        if(quests.size() == 0){
+//            render "Found no quests/runs attached to the ID: $attachedToId.";
+//            return;
+//        }
+//
+//        render(view: "quests", model: [quests : quests, attachedToID : attachedToId, hideTitle : hideTitle]);
+//    }
 
 }
