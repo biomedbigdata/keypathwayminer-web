@@ -32,7 +32,7 @@ grails.project.dependency.resolution = {
 
     // gem
 
-    def  kpmVersion = '5.0.0.002'
+    def  kpmVersion = '5.1'
 
     repositories {
         //inherits true // Whether to inherit repository definitions from plugins

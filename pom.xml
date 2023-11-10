@@ -8,7 +8,7 @@
         <maven-bundle-plugin.version>2.3.4</maven-bundle-plugin.version>
         <osgi.api.version>4.2.0</osgi.api.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kpm.library.version>4.5.36.036</kpm.library.version>
+        <kpm.library.version>5.1</kpm.library.version>
     </properties>
 
     <modelVersion>4.0.0</modelVersion>
